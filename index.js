@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 
 // import routes
 import authRoutes from "./src/routes/auth.js";
-import userRoutes from "./src/routes/user.js";
 import roomRoutes from "./src/routes/room.js";
 
 // import error handler middlewares
@@ -19,7 +18,6 @@ app.use(Express.json());
 
 // middleware to handle requests to /auth
 app.use("/auth", authRoutes);
-app.use("/users", userRoutes);
 app.use("/rooms", roomRoutes);
 
 // middleware to handle errors

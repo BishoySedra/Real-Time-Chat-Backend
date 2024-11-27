@@ -84,7 +84,7 @@ io.on('connection', (socket) => {
 
         // check if user exists
         if (!user) {
-            return callback("You should join to this room first!");
+            return callback("You should join to a room first!");
         }
 
         const message = messageFormat(user.username, messageContent);
@@ -101,12 +101,9 @@ io.on('connection', (socket) => {
         // get current left user info
         const user = userMethods.leaveUser(socket.id);
 
-        // removing the user from the room users
+        // removing the user from the room users array
         const room = rooms.find(r => r.id === user.room);
-        const index = room.users.indexOf(user.id);
-        if (index !== -1) {
-            room.users.splice(index, 1);
-        }
+        room.users = room.users.filter(id => id !== user.id);
 
         io.to(user.room).emit("message", messageFormat(chatBotName, `${user.username} has Left the chat!`));
     });

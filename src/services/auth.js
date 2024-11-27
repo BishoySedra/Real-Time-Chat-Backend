@@ -15,7 +15,7 @@ export const register = async (username, password) => {
 
     // if the username already exists, throw an error
     if (userExists) {
-        throw createCustomError("Username already exists", 409, userExists);
+        throw createCustomError("Username already exists", 409, null);
     }
 
     const hashedPassword = await hashingOps.hashPassword(password);

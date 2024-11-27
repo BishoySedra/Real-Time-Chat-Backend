@@ -1,4 +1,5 @@
 import { rooms } from '../data/rooms.js';
+import { users } from '../data/users.js';
 import { createCustomError } from '../middlewares/errors/customError.js';
 
 export const createRoom = async (name, userId) => {
@@ -67,20 +68,33 @@ export const getMessages = async (roomId) => {
 };
 
 export const sendMessage = async (roomId, senderId, messageContent) => {
+
     const room = rooms.find((room) => room.id === parseInt(roomId));
+    console.log(room);
+
+    // check if the room exists
     if (!room) {
         throw createCustomError("Room not found!", 404, null);
     }
+
+    // check if the user is in the room
     if (!room.users.includes(senderId)) {
         throw createCustomError("User not in the room!", 409, null);
     }
+
+    // find the user who sent the message
     const foundUser = users.find((user) => user.id === senderId);
+
+    // create a new message object
     const message = {
         id: room.messages.length + 1,
         sender: foundUser.username,
         messageContent,
         timestamp: new Date().toISOString(),
     };
+
+    // push the message to the messages array of the room
     room.messages.push(message);
+
     return message;
 };
