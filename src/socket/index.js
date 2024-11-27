@@ -71,7 +71,6 @@ io.on('connection', (socket) => {
             .emit("message", messageFormat(chatBotName, `${decodedToken.username} has Joined the chat!`));
     });
 
-
     // when chat message received
     socket.on("send-message", ({ messageContent }, callback) => {
 
