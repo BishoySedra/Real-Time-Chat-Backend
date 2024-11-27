@@ -1,0 +1,323 @@
+{
+	"info": {
+		"_postman_id": "f78c2949-1f12-4cdb-8ff6-20c4c87d1017",
+		"name": "Real-Time Chat",
+		"description": "This project collection includes a comprehensive set of endpoints for managing users, authentication, and rooms in the chat application. The collection enables users to register, log in, and manage their participation in rooms, including sending and receiving messages. It is designed to provide the core functionality for user interactions within a chat-based platform.\n\n#### **Key Sections of the Collection**:\n\n1. **User Management**:\n    \n    - **POST /register**: Allows new users to register by providing a username and password.\n        \n    - **POST /login**: Authenticates users and returns an access token upon successful login.\n        \n2. **Room Management**:\n    \n    - **POST /rooms**: Creates a new room.\n        \n    - **GET /rooms**: Retrieves all available rooms.\n        \n    - **GET /rooms/:roomId**: Fetches details of a specific room.\n        \n    - **POST /rooms/:roomId/join**: Allows a user to join a room by its ID.\n        \n    - **POST /rooms/:roomId/leave**: Allows a user to leave a room.\n        \n    - **GET /rooms/:roomId/messages**: Fetches all messages within a room.\n        \n    - **POST /rooms/:roomId/messages**: Sends a message to a specific room.\n        \n\n#### **Features**:\n\n- **Authentication**: Secure user login and token-based session management.\n    \n- **Room Creation and Participation**: Users can create, join, and leave rooms for real-time communication.\n    \n- **Message Management**: Support for sending and fetching messages within rooms.\n    \n\n#### **Error Handling**:\n\n- **Consistent Error Responses**: All endpoints return a standardized response format containing a message, body (if applicable), and status code, ensuring clear communication of errors and success.\n    \n\n#### **Purpose**:\n\nThis API collection is designed to facilitate the creation of a dynamic chat application where users can easily manage their accounts, join and leave rooms, and exchange messages within real-time chat rooms. The collection integrates essential features like user authentication and room messaging, making it a foundational part of any chat-based application.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32763635",
+		"_collection_link": "https://interstellar-comet-438348.postman.co/workspace/0c65f7c4-af85-490e-8046-b156e8b7a1e8/collection/32763635-f78c2949-1f12-4cdb-8ff6-20c4c87d1017?action=share&source=collection_link&creator=32763635"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"maya\",\r\n    \"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"register"
+							]
+						},
+						"description": "#### **Description**\n\nThis endpoint allows a new user to register by providing a username and password.\n\n---\n\n#### **Request Details**\n\n- **Method**: `POST`\n    \n- **URL**: `/auth/register`\n    \n- _**Headers**_:  \n    `{ \"Content-Type\": \"application/json\"}`\n    \n- **Body:**  \n    `{ \"username\": \"exampleUser\", \"password\": \"examplePassword123\"}`\n    \n\n---\n\n#### **Response Examples**\n\n##### **Success Response (200)**\n\n**Message**: _User registered successfully!_  \n**Body**: The newly created user object (excluding password).\n\n``` json\n{\n  \"message\": \"User registered successfully!\",\n  \"body\": {\n    \"id\": 1,\n    \"username\": \"exampleUser\"\n  },\n  \"status\": 200\n}\n\n ```\n\n##### **Error Responses**\n\n1. **Missing Username or Password (400)**  \n    **Message**: _Please provide username and password_  \n    **Body**: `null`\n    \n\n``` json\n{\n  \"message\": \"Please provide username and password\",\n  \"body\": null,\n  \"status\": 400\n}\n\n ```\n\n1. **Username Already Exists (409)**  \n    **Message**: _Username already exists_  \n    **Body**: Contains the existing user details.\n    \n\n``` json\n{\n  \"message\": \"Username already exists\",\n  \"body\": {\n    \"id\": 1,\n    \"username\": \"exampleUser\"\n  },\n  \"status\": 409\n}\n\n ```\n\n---\n\n#### **Notes**\n\n- Passwords are securely hashed before being stored.\n    \n- Username must be unique; attempts to register with an existing username will return a `409 Conflict` error.\n    \n- The `body` field in success responses excludes sensitive information like the password."
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"maya\",\r\n    \"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "#### **Description**\n\nThis endpoint allows a registered user to log in by providing their username and password. Upon successful login, an access token is returned for authentication in subsequent requests.\n\n---\n\n#### **Request Details**\n\n- **Method**: `POST`\n    \n- **URL**: `/login`\n    \n- _**Headers**_:  \n    `{ \"Content-Type\": \"application/json\"}`\n    \n- **Body:**  \n    `{ \"username\": \"exampleUser\", \"password\": \"examplePassword123\"}`\n    \n\n---\n\n#### **Response Examples**\n\n##### **Success Response (200)**\n\n**Message**: _User logged in successfully!_  \n**Body**: Contains the generated access token.\n\n``` json\n{\n  \"message\": \"User logged in successfully!\",\n  \"body\": {\n    \"access-token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"\n  },\n  \"status\": 200\n}\n\n ```\n\n##### **Error Responses**\n\n1. **Missing Username or Password (400)**  \n    **Message**: _Please provide username and password_  \n    **Body**: `null`\n    \n\n``` json\n{\n  \"message\": \"Please provide username and password\",\n  \"body\": null,\n  \"status\": 400\n}\n\n ```\n\n1. **Invalid Username or Password (401)**  \n    **Message**: _Invalid username or password_  \n    **Body**: `null`\n    \n\n``` json\n{\n  \"message\": \"Invalid username or password\",\n  \"body\": null,\n  \"status\": 401\n}\n\n ```\n\n---\n\n#### **Notes**\n\n- The provided username and password are validated against the stored user data.\n    \n- { \"Authorization\": \"Bearer \"}\n    \n- Invalid credentials (either username or password) return a `401 Unauthorized` status with a generic error message to avoid revealing sensitive information."
+					},
+					"response": []
+				}
+			],
+			"description": "This folder contains the endpoints for managing user authentication and registration. These endpoints are integral to the system's authentication workflow, enabling users to register and log in securely. Each endpoint enforces security practices such as password hashing and JWT-based authentication.\n\nIncluded Endpoints:\n\n- **POST /register**: Register a new user with a username and password.\n    \n- **POST /login**: Log in an existing user and receive a JWT access token.\n    \n\nAll responses adhere to a consistent format with `message`, `body`, and `status` fields. Ensure valid tokens are provided for protected endpoints."
+		},
+		{
+			"name": "Room",
+			"item": [
+				{
+					"name": "Create a chat room",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJCaXNobzEyMyIsInBhc3N3b3JkIjoiJDJhJDEwJDloeTNxdHUxVWgzcjZMY2ZBSlNQU2VjN0RyTEVQZHNlWGRtUjdtbUxwZkc5Z1ZhR2hUVTJxIiwiaWF0IjoxNzMyNzA3NzMwLCJleHAiOjE3NjQyNjUzMzB9.0ZkY32dVlCvl_Jz_qoPNz4JXVj9QQugO4faaz2slXfQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"G2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/rooms/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"rooms",
+								""
+							]
+						},
+						"description": "#### **Description**\n\nThis endpoint allows authenticated users to create a new chat room. The creator of the room is automatically added as the first member.\n\n---\n\n#### **Request Details**\n\n- **Method**: `POST`\n    \n- **URL**: `/`\n    \n- **Headers:**  \n    `{ \"Authorization\": \"Bearer \", \"Content-Type\": \"application/json\" }`  \n    **Note**: The `Authorization` header is required for authentication.\n    \n- **Body:**  \n    `{ \"name\": \"Room Name\"}`\n    \n\n---\n\n#### **Response Examples**\n\n##### **Success Response (201)**\n\n**Message**: _Room created successfully!_  \n**Body**: Contains the newly created room details.\n\n``` json\n{\n  \"message\": \"Room created successfully!\",\n  \"body\": {\n    \"id\": 1,\n    \"name\": \"Room Name\",\n    \"users\": [1],\n    \"messages\": []\n  },\n  \"status\": 201\n}\n\n ```\n\n##### **Error Responses**\n\n1. **Missing Room Name (400)**  \n    **Message**: _Room name is required._  \n    **Body**: `null`\n    \n\n``` json\n{\n  \"message\": \"Room name is required.\",\n  \"body\": null,\n  \"status\": 400\n}\n\n ```\n\n1. **Unauthorized Access (401)**  \n    **Message**: _Unauthorized_  \n    **Body**: `null`\n    \n\n``` json\n{\n  \"message\": \"Unauthorized\",\n  \"body\": null,\n  \"status\": 401\n}\n\n ```\n\n---\n\n#### **Notes**\n\n- The `name` field is required to create a room. If omitted or empty, the request will fail with a `400` status code.\n    \n- The `Authorization` header must include a valid JWT token.\n    \n- The response includes the room ID, name, and an array of users (with the creator as the first member). The `messages` field will be an empty array initially."
+					},
+					"response": []
+				},
+				{
+					"name": "Get all rooms",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJCaXNobzEyMyIsInBhc3N3b3JkIjoiJDJhJDEwJFh5TXRxYXhXeVZnRk9aQ1Q5cGtob3VQZHhMMmcyckEzQy56b1RQdzV4VGFtTEVqREQ4d0h1IiwiaWF0IjoxNzMyNjk4NDEzLCJleHAiOjE3NjQyNTYwMTN9.WuCHxHriTObbS1i0CQDtSmID3r6Ma6WJ1wdxID3MoBg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/rooms",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"rooms"
+							]
+						},
+						"description": "StartFragment\n\n### **Postman Documentation for GET /**\n\n---\n\n### **GET /**\n\n#### **Description**\n\nThis endpoint retrieves a list of all available chat rooms. It returns all rooms that have been created, including details like the room ID, name, and the users in the room.\n\n---\n\n#### **Request Details**\n\n- **Method**: `GET`\n    \n- **URL**: `/`\n    \n- **Headers:**  \n    `{ \"Authorization\": \"Bearer \"}`**``****Note**: The Authorization header is required for authentication.\n    \n- **Body**: None\n    \n\n---\n\n#### **Response Examples**\n\n##### **Success Response (200)**\n\n**Message**: _All rooms fetched successfully!_  \n**Body**: Contains an array of room objects.\n\n``` json\n{\n  \"message\": \"All rooms fetched successfully!\",\n  \"body\": [\n    {\n      \"id\": 1,\n      \"name\": \"Room Name\",\n      \"users\": [1],\n      \"messages\": []\n    },\n    {\n      \"id\": 2,\n      \"name\": \"Another Room\",\n      \"users\": [1, 2],\n      \"messages\": []\n    }\n  ],\n  \"status\": 200\n}\n\n ```\n\n##### **Error Response (401)**\n\n**Message**: _Unauthorized_ (if the token is invalid or missing).  \n**Body**: `null`\n\n``` json\n{\n  \"message\": \"Unauthorized\",\n  \"body\": null,\n  \"status\": 401\n}\n\n ```\n\n---\n\n#### **Notes**\n\n- The response will contain an array of room objects, including their `id`, `name`, a list of `users` (with user IDs), and an empty array for `messages` initially.\n    \n- The `Authorization` header must include a valid JWT token for the user to access this endpoint."
+					},
+					"response": []
+				},
+				{
+					"name": "Get a room by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJCaXNobzEyMyIsInBhc3N3b3JkIjoiJDJhJDEwJFdzaG12dnNsOWZvN1ZIYUNQbUdNUGUxY1F5WWtyWDh4UFptQWxsbHdoUHNFV3BmSTM1TEx1IiwiaWF0IjoxNzMyNjk3MTAyLCJleHAiOjE3NjQyNTQ3MDJ9.5InT3TnJYjls2eCO103yUVGRn7ANtm0Wd0p-K5ZvHFc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/rooms/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"rooms",
+								"1"
+							]
+						},
+						"description": "#### **Description**\n\nThis endpoint retrieves the details of a specific chat room by its `roomId`. The response includes the room's name, list of users, and messages.\n\n---\n\n#### **Request Details**\n\n- **Method**: `GET`\n    \n- **Example**: `/rooms/1`\n    \n- **Headers:**  \n    `{ \"Authorization\": \"Bearer \"}`  \n    **Note**: The `Authorization` header is required for authentication.\n    \n- **Body**: None\n    \n\n---\n\n#### **Response Examples**\n\n##### **Success Response (200)**\n\n**Message**: _Room fetched successfully!_  \n**Body**: Contains the room details.\n\n``` json\n{\n  \"message\": \"Room fetched successfully!\",\n  \"body\": {\n    \"id\": 1,\n    \"name\": \"Room Name\",\n    \"users\": [1],\n    \"messages\": []\n  },\n  \"status\": 200\n}\n\n ```\n\n##### **Error Response (404)**\n\n**Message**: _Room not found!_ (if the room with the specified `roomId` doesn't exist).  \n**Body**: `null`\n\n``` json\n{\n  \"message\": \"Room not found!\",\n  \"body\": null,\n  \"status\": 404\n}\n\n ```\n\n##### **Error Response (401)**\n\n**Message**: _Unauthorized_ (if the token is invalid or missing).  \n**Body**: `null`\n\n``` json\n{\n  \"message\": \"Unauthorized\",\n  \"body\": null,\n  \"status\": 401\n}\n\n ```\n\n---\n\n#### **Notes**\n\n- The `Authorization` header must include a valid JWT token for the user to access this endpoint.\n    \n- If the room with the provided `roomId` does not exist, a `404` error will be returned with a message indicating that the room was not found.\n    \n- The response includes the room details, such as `id`, `name`, `users` (with user IDs), and an empty `messages` array initially."
+					},
+					"response": []
+				},
+				{
+					"name": "Join a room",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJCaXNobzEyMzQiLCJwYXNzd29yZCI6IiQyYSQxMCQvRjZsa2pxbEpwNlBoaDdibXE5ZlUubDEyTUVxUW9qZHVteHlLdWJaZm5sdGxSMXAuL1AwUyIsImlhdCI6MTczMjcwNzY5MSwiZXhwIjoxNzY0MjY1MjkxfQ.7YTCtq92nWDI66X9DkcgKC_c41Ss1YuAqS2_36MDqvE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/rooms/1/join",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"rooms",
+								"1",
+								"join"
+							]
+						},
+						"description": "#### **Description**\n\nThis endpoint allows a user to join a specific chat room by its `roomId`. The user is added to the room's list of users, and the updated room details are returned.\n\n---\n\n#### **Request Details**\n\n- **Method**: `POST`\n    \n- **Example**: `/rooms/1/join`\n    \n- **Headers:**  \n    `{ \"Authorization\": \"Bearer \"}   `**Note**: The `Authorization` header is required for authentication.\n    \n- **Body**: None\n    \n\n---\n\n#### **Response Examples**\n\n##### **Success Response (200)**\n\n**Message**: _Room joined successfully!_  \n**Body**: Contains the updated room details, including the list of users who are now in the room.\n\n``` json\n{\n  \"message\": \"Room joined successfully!\",\n  \"body\": {\n    \"id\": 1,\n    \"name\": \"Room Name\",\n    \"users\": [1, 2],  // Updated list of users\n    \"messages\": []\n  },\n  \"status\": 200\n}\n\n ```\n\n##### **Error Response (404)**\n\n**Message**: _Room not found!_ (if the room with the specified `roomId` doesn't exist).  \n**Body**: `null`\n\n``` json\n{\n  \"message\": \"Room not found!\",\n  \"body\": null,\n  \"status\": 404\n}\n\n ```\n\n##### **Error Response (409)**\n\n**Message**: _User already in the room!_ (if the user is already a member of the room).  \n**Body**: `null`\n\n``` json\n{\n  \"message\": \"User already in the room!\",\n  \"body\": null,\n  \"status\": 409\n}\n\n ```\n\n##### **Error Response (401)**\n\n**Message**: _Unauthorized_ (if the token is invalid or missing).  \n**Body**: `null`\n\n``` json\n{\n  \"message\": \"Unauthorized\",\n  \"body\": null,\n  \"status\": 401\n}\n\n ```\n\n---\n\n#### **Notes**\n\n- The `Authorization` header must include a valid JWT token for the user to access this endpoint.\n    \n- If the room with the specified `roomId` doesn't exist, a `404` error will be returned with a message indicating that the room was not found.\n    \n- If the user is already a member of the room, a `409` error will be returned with a message stating that the user is already in the room.\n    \n- Upon successfully joining the room, the updated room details will be returned, including the new list of users."
+					},
+					"response": []
+				},
+				{
+					"name": "Leave a room",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJCaXNobzEyMzQiLCJwYXNzd29yZCI6IiQyYSQxMCRvOXZ2em9rbzBKRlVDV1lDa1RxTFRPbVRCc2VUL0RKZnpMdXg5c01FZUtOMU5nTE9iaWkzTyIsImlhdCI6MTczMjY5OTUxNywiZXhwIjoxNzY0MjU3MTE3fQ.UuzRAxUieut2MgYM9i8vM9l0oFeqmk-Id-JQws6E95Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/rooms/1/leave",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"rooms",
+								"1",
+								"leave"
+							]
+						},
+						"description": "#### **Description**\n\nThis endpoint allows a user to leave a specific chat room by its `roomId`. The user is removed from the room's list of users. If the room becomes empty after the user leaves, the room is deleted from the system.\n\n---\n\n#### **Request Details**\n\n- **Method**: `POST`\n    \n- **Example**: `/rooms/1/leave`\n    \n- **Headers:**  \n    `{ \"Authorization\": \"Bearer \"}   `**Note**: The `Authorization` header is required for authentication.\n    \n- **Body**: None\n    \n\n---\n\n#### **Response Examples**\n\n##### **Success Response (200)**\n\n**Message**: _Room left successfully!_  \n**Body**: Contains the updated room details, including the list of users after the current user has left. If the room becomes empty, it will no longer exist in the list.\n\n``` json\n{\n  \"message\": \"Room left successfully!\",\n  \"body\": {\n    \"id\": 1,\n    \"name\": \"Room Name\",\n    \"users\": [1],  // Updated list of users, or the room is deleted if empty\n    \"messages\": []\n  },\n  \"status\": 200\n}\n\n ```\n\n##### **Error Response (404)**\n\n**Message**: _Room not found!_ (if the room with the specified `roomId` doesn't exist).  \n**Body**: `null`\n\n``` json\n{\n  \"message\": \"Room not found!\",\n  \"body\": null,\n  \"status\": 404\n}\n\n ```\n\n##### **Error Response (409)**\n\n**Message**: _User not in the room!_ (if the user is not a member of the room).  \n**Body**: `null`\n\n``` json\n{\n  \"message\": \"User not in the room!\",\n  \"body\": null,\n  \"status\": 409\n}\n\n ```\n\n##### **Error Response (401)**\n\n**Message**: _Unauthorized_ (if the token is invalid or missing).  \n**Body**: `null`\n\n``` json\n{\n  \"message\": \"Unauthorized\",\n  \"body\": null,\n  \"status\": 401\n}\n\n ```\n\n---\n\n#### **Notes**\n\n- The `Authorization` header must include a valid JWT token for the user to access this endpoint.\n    \n- If the room with the specified `roomId` doesn't exist, a `404` error will be returned with a message indicating that the room was not found.\n    \n- If the user is not in the room, a `409` error will be returned, indicating that the user cannot leave the room because they are not a member.\n    \n- Upon successfully leaving the room, the updated room details will be returned. If the room becomes empty, it will be deleted from the system."
+					},
+					"response": []
+				},
+				{
+					"name": "Get messages of a room by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJCaXNobzEyMyIsInBhc3N3b3JkIjoiJDJhJDEwJDloeTNxdHUxVWgzcjZMY2ZBSlNQU2VjN0RyTEVQZHNlWGRtUjdtbUxwZkc5Z1ZhR2hUVTJxIiwiaWF0IjoxNzMyNzA3NzMwLCJleHAiOjE3NjQyNjUzMzB9.0ZkY32dVlCvl_Jz_qoPNz4JXVj9QQugO4faaz2slXfQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/rooms/1/messages",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"rooms",
+								"1",
+								"messages"
+							]
+						},
+						"description": "StartFragment\n\n### **Postman Documentation for GET /:roomId/messages**\n\n---\n\n### **GET /:roomId/messages**\n\n#### **Description**\n\nThis endpoint retrieves all messages in a specific chat room by its `roomId`.\n\n---\n\n#### **Request Details**\n\n- **Method**: `GET`\n    \n- **Example**: `/rooms/1/messages`\n    \n- **Headers:**  \n    `{ \"Authorization\": \"Bearer \"}`  \n    **Note**: The `Authorization` header is required for authentication.\n    \n- **Body**: None\n    \n\n---\n\n#### **Response Examples**\n\n##### **Success Response (200)**\n\n**Message**: _Messages fetched successfully!_  \n**Body**: Contains a list of all messages in the room.\n\n``` json\n{\n  \"message\": \"Messages fetched successfully!\",\n  \"body\": [\n    {\n      \"senderId\": 1,\n      \"message\": \"Hello, this is a test message\",\n      \"timestamp\": \"2024-11-01T12:34:56Z\"\n    },\n    {\n      \"senderId\": 2,\n      \"message\": \"Hi, how are you?\",\n      \"timestamp\": \"2024-11-01T12:35:10Z\"\n    }\n  ],\n  \"status\": 200\n}\n\n ```\n\n##### **Error Response (404)**\n\n**Message**: _Room not found!_ (if the room with the specified `roomId` doesn't exist).  \n**Body**: `null`\n\n``` json\n{\n  \"message\": \"Room not found!\",\n  \"body\": null,\n  \"status\": 404\n}\n\n ```\n\n##### **Error Response (401)**\n\n**Message**: _Unauthorized_ (if the token is invalid or missing).  \n**Body**: `null`\n\n``` json\n{\n  \"message\": \"Unauthorized\",\n  \"body\": null,\n  \"status\": 401\n}\n\n ```\n\n---\n\n#### **Notes**\n\n- The `Authorization` header must include a valid JWT token for the user to access this endpoint.\n    \n- If the room with the specified `roomId` doesn't exist, a `404` error will be returned with a message indicating that the room was not found.\n    \n- The response body contains an array of message objects, each with the following structure:  \n    \n    - `senderId`: The ID of the user who sent the message.\n        \n    - `message`: The content of the message.\n        \n    - `timestamp`: The time the message was sent in ISO 8601 format."
+					},
+					"response": []
+				},
+				{
+					"name": "Send message",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJCaXNobzEyMzQiLCJwYXNzd29yZCI6IiQyYSQxMCQvRjZsa2pxbEpwNlBoaDdibXE5ZlUubDEyTUVxUW9qZHVteHlLdWJaZm5sdGxSMXAuL1AwUyIsImlhdCI6MTczMjcwNzY5MSwiZXhwIjoxNzY0MjY1MjkxfQ.7YTCtq92nWDI66X9DkcgKC_c41Ss1YuAqS2_36MDqvE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"messageContent\": \"Hello, guys!!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/rooms/1/messages/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"rooms",
+								"1",
+								"messages",
+								""
+							]
+						},
+						"description": "#### **Description**\n\nThis endpoint allows a user to send a message to a specific chat room by its `roomId`.\n\n---\n\n#### **Request Details**\n\n- **Method**: `POST`\n    \n- **Example**: `/rooms/1/messages`\n    \n- **Headers:**  \n    `{ \"Authorization\": \"Bearer \"}`  \n    **Note**: The `Authorization` header is required for authentication.\n    \n- **Body:**  \n    `{ \"messageContent\": \"Hello everyone!\"}`\n    \n\n---\n\n#### **Response Examples**\n\n##### **Success Response (201)**\n\n**Message**: _Message sent successfully!_  \n**Body**: Contains the details of the sent message.\n\n``` json\n{\n  \"message\": \"Message sent successfully!\",\n  \"body\": {\n    \"id\": 1,\n    \"sender\": \"john_doe\",\n    \"messageContent\": \"Hello everyone!\",\n    \"timestamp\": \"2024-11-01T12:45:00Z\"\n  },\n  \"status\": 201\n}\n\n ```\n\n##### **Error Response (404)**\n\n**Message**: _Room not found!_ (if the room with the specified `roomId` doesn't exist).  \n**Body**: `null`\n\n``` json\n{\n  \"message\": \"Room not found!\",\n  \"body\": null,\n  \"status\": 404\n}\n\n ```\n\n##### **Error Response (409)**\n\n**Message**: _User not in the room!_ (if the user is not part of the room).  \n**Body**: `null`\n\n``` json\n{\n  \"message\": \"User not in the room!\",\n  \"body\": null,\n  \"status\": 409\n}\n\n ```\n\n##### **Error Response (401)**\n\n**Message**: _Unauthorized_ (if the token is invalid or missing).  \n**Body**: `null`\n\n``` json\n{\n  \"message\": \"Unauthorized\",\n  \"body\": null,\n  \"status\": 401\n}\n\n ```\n\n---\n\n#### **Notes**\n\n- The `Authorization` header must include a valid JWT token for the user to access this endpoint.\n    \n- The request body must include the `messageContent` field, which is the content of the message being sent.\n    \n- If the room with the specified `roomId` doesn't exist, a `404` error will be returned with a message indicating that the room was not found.\n    \n- If the user is not part of the room, a `409` error will be returned with a message indicating that the user is not in the room.\n    \n- The response body contains the details of the sent message, which includes:\n    \n    - `id`: The ID of the message.\n        \n    - `sender`: The username of the user who sent the message.\n        \n    - `messageContent`: The content of the message.\n        \n    - `timestamp`: The time the message was sent in ISO 8601 format."
+					},
+					"response": []
+				}
+			],
+			"description": "This folder contains the implementation of all the endpoints related to room management in the chat application. These endpoints allow users to perform various actions such as creating a room, joining or leaving a room, retrieving room information, and sending or receiving messages within a room.\n\n#### **Key Endpoints**:\n\n- **POST /rooms**: Create a new room.\n    \n- **GET /rooms**: Retrieve all available rooms.\n    \n- **GET /rooms/:roomId**: Retrieve details of a specific room by its ID.\n    \n- **POST /rooms/:roomId/join**: Join a room by its ID.\n    \n- **POST /rooms/:roomId/leave**: Leave a room by its ID.\n    \n- **GET /rooms/:roomId/messages**: Fetch messages from a specific room.\n    \n- **POST /rooms/:roomId/messages**: Send a message to a room.\n    \n\nThese endpoints are used to manage rooms in the application, allowing users to interact, send messages, and participate in conversations within their designated rooms.\n\n#### **Service Layer**:\n\nThe logic for creating, retrieving, updating, and deleting rooms is handled by a service layer that communicates with an in-memory store for rooms and users. The business logic for validating requests, managing room memberships, and handling messages is encapsulated in this layer.\n\n#### **Error Handling**:\n\nError handling is implemented across all endpoints to ensure proper feedback when rooms are not found, users are not part of a room, or invalid data is provided.\n\nThis folder encapsulates all necessary operations for room management and serves as the foundation for building interactive chat features in the application."
+		}
+	]
+}

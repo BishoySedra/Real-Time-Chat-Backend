@@ -30,8 +30,8 @@ export const register = async (username, password) => {
     // push the user object to the users array
     users.push(newUser);
 
-    // the object shouldn't have contained password in this object for security purpose.
-    return newUser;
+    // return the user object without the password
+    return { id: newUser.id, username: newUser.username };
 };
 
 export const login = async (username, password) => {
