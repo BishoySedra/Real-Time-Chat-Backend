@@ -128,9 +128,9 @@ Authorization: Bearer <your-token>
 
 ## Postman Documentation
 
-Comprehensive API documentation is available via **Postman**. It includes:  
+Comprehensive API documentation is available via **Postman**. It includes:
 
-- Request details (headers, parameters, body).  
-- Example responses for both success and error cases.  
+- Request details (headers, parameters, body).
+- Example responses for both success and error cases.
 
-You can import the documentation using the provided `Postman_Collection.json` file in this repository.
+You can import the documentation using the provided [Postman_Collection.json](docs/Postman_Collection.json) file in this repository.
