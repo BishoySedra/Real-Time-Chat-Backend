@@ -16,7 +16,7 @@ dotenv.config();
 // middleware to parse incoming requests with JSON payloads
 app.use(Express.json());
 
-// middleware to handle requests to /auth
+// middleware to handle requests
 app.use("/auth", authRoutes);
 app.use("/rooms", roomRoutes);
 
