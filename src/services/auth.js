@@ -60,7 +60,7 @@ export const login = async (username, password) => {
     // generate a token
     const token = jwtOps.generateToken(user);
 
-    console.log(token);
+    // console.log(token);
 
     // the object shouldn't have contained password in this object for security purpose.
     return token;
